@@ -8,4 +8,5 @@ public interface IDBConfig {
     public static final String INTEGRATED_SECURITY = "false";
     public static final String USERNAME = "root";
     public static final String PASSWORD = "root";
+    
 }
