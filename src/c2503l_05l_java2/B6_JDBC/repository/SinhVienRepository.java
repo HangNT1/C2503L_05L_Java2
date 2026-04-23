@@ -75,7 +75,7 @@ public class SinhVienRepository {
 //            ps.setObject(2, ten);
             // Bang sql -> ResultSet: doi vs nhung cau SELECT
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 // du lieu con -> true 
                 // k con ban ghi -> false 
                 SinhVien sv = new SinhVien();
@@ -159,7 +159,122 @@ public class SinhVienRepository {
         return check > 0; // true: neu add thanh cong 
     }
 
+    // Tim kiem theo khoang gia tri cu the: Tim kiem theo khoang tuoi
+    public List<SinhVien> timKiemTheoKhoangTuoi(int tuoiMin, int tuoiMax) {
+        List<SinhVien> listSinhVien = new ArrayList<>();
+        String sql = """
+                     SELECT * 
+                     FROM sinh_vien
+                     WHERE tuoi >= ? AND tuoi <= ?
+                     """;
+        try (Connection con = JDBCConnect.getJDBCConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setObject(1, tuoiMin);
+            ps.setObject(2, tuoiMax);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SinhVien sv = new SinhVien();
+                sv.setMa(rs.getInt(1));
+                sv.setTuoi(rs.getInt(3));
+                sv.setTen(rs.getString(2));
+                sv.setGioiTinh(rs.getBoolean(4));
+                sv.setNganhHoc(rs.getString(5));
+                sv.setDiemTrungBinh(rs.getDouble(6));
+                // add phan tu sv vao list 
+                listSinhVien.add(sv);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listSinhVien;
+    }
+
+    // Tim kiem theo 1 gia tri cu the: Tim kiem theo diem trung binh
+    public List<SinhVien> timKiemDiemTrungBinh(double dtb) {
+        List<SinhVien> listSinhVien = new ArrayList<>();
+        String sql = """
+                     SELECT * 
+                     FROM sinh_vien
+                     WHERE diem_trung_binh = ?
+                     """;
+        try (Connection con = JDBCConnect.getJDBCConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setObject(1, dtb);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SinhVien sv = new SinhVien();
+                sv.setMa(rs.getInt(1));
+                sv.setTuoi(rs.getInt(3));
+                sv.setTen(rs.getString(2));
+                sv.setGioiTinh(rs.getBoolean(4));
+                sv.setNganhHoc(rs.getString(5));
+                sv.setDiemTrungBinh(rs.getDouble(6));
+                // add phan tu sv vao list 
+                listSinhVien.add(sv);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listSinhVien;
+    }
+
+    // Tim kiem chua ten/bat dau bang/ket thuc bang
+    public List<SinhVien> timKiemTen(String name) {
+        List<SinhVien> listSinhVien = new ArrayList<>();
+        String sql = """
+                     SELECT * 
+                     FROM sinh_vien
+                     WHERE ten LIKE ?
+                     """;
+        try (Connection con = JDBCConnect.getJDBCConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setObject(1, "%" + name + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SinhVien sv = new SinhVien();
+                sv.setMa(rs.getInt(1));
+                sv.setTuoi(rs.getInt(3));
+                sv.setTen(rs.getString(2));
+                sv.setGioiTinh(rs.getBoolean(4));
+                sv.setNganhHoc(rs.getString(5));
+                sv.setDiemTrungBinh(rs.getDouble(6));
+                // add phan tu sv vao list 
+                listSinhVien.add(sv);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listSinhVien;
+    }
+
+    // Sap xep
+    public List<SinhVien> sapXep() {
+        List<SinhVien> listSinhVien = new ArrayList<>();
+        // Code 
+        // B1: Viet cau lenh SQL theo mong muon 
+        String sql = """
+                     SELECT ma,tuoi,ten, gioi_tinh, nganh_hoc, diem_trung_binh
+                     FROM sinh_vien
+                     ORDER BY tuoi 
+                     """;
+        try (Connection con = JDBCConnect.getJDBCConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SinhVien sv = new SinhVien();
+                sv.setMa(rs.getInt("ma")); // ten cọt
+                sv.setTuoi(rs.getInt(2)); // vi tri cua cot trong du lieu tra ra 
+                sv.setTen(rs.getString(3));
+                sv.setGioiTinh(rs.getBoolean(4));
+                sv.setNganhHoc(rs.getString(5));
+                sv.setDiemTrungBinh(rs.getDouble(6));
+                // add phan tu sv vao list 
+                listSinhVien.add(sv);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listSinhVien;
+    }
+
     public static void main(String[] args) {
-        System.out.println(new SinhVienRepository().getAll());
+        String name = "a";
+        System.out.println(new SinhVienRepository().timKiemTen(name));
     }
 }

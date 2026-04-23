@@ -7,6 +7,7 @@ package c2503l_05l_java2.B6_JDBC.service;
 import c2503l_05l_java2.B6_JDBC.entity.SinhVien;
 import c2503l_05l_java2.B6_JDBC.repository.SinhVienRepository;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -43,5 +44,24 @@ public class SinhVienService {
             return "Add thanh cong";
         }
         return "Add that bai";
+    }
+
+    public List<SinhVien> sapXep() {
+        return sinhVienRepository.sapXep();
+    }
+
+    // in danh sach sv
+    public void inThongTin(List<SinhVien> lists) {
+        lists.forEach(s -> System.out.println(s));
+    }
+
+    public SinhVien getThongTinSinhVien() {
+        Scanner sc = new Scanner(System.in);
+        SinhVien sv = new SinhVien();
+        System.out.println("Moi nhap ten:");
+        String ten = sc.nextLine();
+        // COi nhu nhap tt 
+        sv.setTen(ten);
+        return sv;
     }
 }

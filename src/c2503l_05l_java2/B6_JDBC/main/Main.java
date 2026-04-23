@@ -23,22 +23,23 @@ public class Main {
         System.out.println("4. hien thi");
         System.out.println("4. thoat");
         Scanner sc = new Scanner(System.in);
-
+        List<SinhVien> lists = service.findAll();
         while (true) {
             System.out.println("xin moi ban nhap: ");
             int chose = Integer.parseInt(sc.nextLine());
             switch (chose) {
                 case 1:
                     // Nhap tu ban phim : nen la ham service -> chua quen viet o day 
-                    SinhVien sv = new SinhVien();
-                    System.out.println("Moi nhap ten:");
-                    String ten = sc.nextLine();
+//                    SinhVien sv = new SinhVien();
+//                    System.out.println("Moi nhap ten:");
+//                    String ten = sc.nextLine();
                     // nhap tu ban phim tuong tu cac thuoc tinh khac 
 
-                    service.addSinhVien(sv);
+                    service.addSinhVien(service.getThongTinSinhVien());
                     break;
                 case 2:
-
+                    lists = service.sapXep(); // gan lai gia tri cho bien lists
+                    service.inThongTin(lists);
                     break;
                 case 3:
                     System.out.println("Moi nhap ma can xoa:");
@@ -46,7 +47,7 @@ public class Main {
                     service.delete(maCanXoa);
                     break;
                 case 4:
-                    List<SinhVien> lists = service.findAll();
+                    service.inThongTin(lists);
                     // for 
                     break;
                 case 5:
