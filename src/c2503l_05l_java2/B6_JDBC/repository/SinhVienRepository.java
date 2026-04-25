@@ -273,6 +273,37 @@ public class SinhVienRepository {
         return listSinhVien;
     }
 
+    public List<SinhVien> phanTrang(int pageNo, int pageSize) {
+        List<SinhVien> listSinhVien = new ArrayList<>();
+        // Code 
+        // B1: Viet cau lenh SQL theo mong muon 
+        String sql = """
+                     SELECT ma,tuoi,ten, gioi_tinh, nganh_hoc, diem_trung_binh
+                     FROM sinh_vien
+                     LIMIT ? OFFSET ?
+                     """;
+        try (Connection con = JDBCConnect.getJDBCConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+            int offset = (pageNo -1)* pageSize;
+            ps.setObject(1, pageSize);
+            ps.setObject(2, offset);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                SinhVien sv = new SinhVien();
+                sv.setMa(rs.getInt("ma")); // ten cọt
+                sv.setTuoi(rs.getInt(2)); // vi tri cua cot trong du lieu tra ra 
+                sv.setTen(rs.getString(3));
+                sv.setGioiTinh(rs.getBoolean(4));
+                sv.setNganhHoc(rs.getString(5));
+                sv.setDiemTrungBinh(rs.getDouble(6));
+                listSinhVien.add(sv);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listSinhVien;
+    }
+
     public static void main(String[] args) {
         String name = "a";
         System.out.println(new SinhVienRepository().timKiemTen(name));
