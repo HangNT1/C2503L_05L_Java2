@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
  * @author hangnt
  */
 public class GiangViewJFrame extends javax.swing.JFrame {
-
+    
     private GiangVienService giangVienService = new GiangVienService();
     private List<GiangVien> listGiangVien = new ArrayList<>();
     // custom table => DefaultTableModel
@@ -241,17 +241,67 @@ public class GiangViewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearFormActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        String mess = giangVienService.addGiangVien(getFormData());
+        JOptionPane.showMessageDialog(this, mess);
+        // Cap nhap lai list 
+        listGiangVien = giangVienService.getAll();
+        showDataTable(listGiangVien);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
+        int index = tbGiangVien.getSelectedRow();
+//        JOptionPane.showMessageDialog(this, "Dong dang duoc chon" + index);
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Ban chua click vao dong nao");
+        } else {
+            // Lay ra doi tuong 
+            GiangVien gv = listGiangVien.get(index);
+            // update 
+            String mess = giangVienService.updateGiangVien(getFormData(), gv.getMa());
+            JOptionPane.showMessageDialog(this, mess);
+            // Cap nhap lai list 
+            listGiangVien = giangVienService.getAll();
+            showDataTable(listGiangVien);
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        // TODO add your handling code here:
+        int index = tbGiangVien.getSelectedRow();
+//        JOptionPane.showMessageDialog(this, "Dong dang duoc chon" + index);
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Ban chua click vao dong nao");
+        } else {
+            // xoa 
+            // Lay ra doi tuong 
+            GiangVien gv = listGiangVien.get(index);
+            giangVienService.removeGiangVien(gv.getMa());
+            // Cap nhap lai list 
+            listGiangVien = giangVienService.getAll();
+            showDataTable(listGiangVien);
+        }
     }//GEN-LAST:event_btnRemoveActionPerformed
-
+    
+    private GiangVien getFormData() {
+        // B1: Lay du lieu tren form 
+        String ma = txtMa.getText();
+        String ten = txtTen.getText();
+        int tuoi = Integer.parseInt(txtTuoi.getText());
+        // can int -> co String -> String -> int 
+//        int bac = (int) cbbbac.getSelectedItem();
+        String bac = (String) cbbbac.getSelectedItem();
+        // 1 -> Fulltime 
+        // 2 -> Parttime 
+        String loaiGV = (String) cbbLoaiGiangVien.getSelectedItem();
+//        int loaiGVInt = loaiGV.equalsIgnoreCase("Fulltime") ? 1 : 2;
+        int loaiGVInt = 2;
+        if (loaiGV.equalsIgnoreCase("Fulltime")) {
+            loaiGVInt = 1;
+        }
+        boolean gioiTinh = rdNam.isSelected();
+        // B2: Khoi tao doi tuong 
+        GiangVien gv = new GiangVien(ma, tuoi, ten, Integer.valueOf(bac), loaiGVInt, gioiTinh);
+        return gv;
+    }
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
 //        System.exit(0); // Co bn jframe/dialog -> tat het 
         this.dispose(); // Chi tat 1 fiame/dialog duy nhat(cai dang bat) - nhung cai khac van bat
@@ -266,7 +316,7 @@ public class GiangViewJFrame extends javax.swing.JFrame {
             clickData(index);
         }
     }//GEN-LAST:event_tbGiangVienMouseClicked
-
+    
     private void clickData(int index) {
         GiangVien gv = listGiangVien.get(index);
         txtMa.setText(gv.getMa());
