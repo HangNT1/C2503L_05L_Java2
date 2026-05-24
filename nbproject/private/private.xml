@@ -2,12 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/Users/hangnt/Documents/Aptech/C2503L_05L_Java2/src/c2503l_05l_java2/B12_Login/config/IDBConfig.java</file>
-            <file>file:/Users/hangnt/Documents/Aptech/C2503L_05L_Java2/src/c2503l_05l_java2/B12_Login/util/JDBCConnect.java</file>
-            <file>file:/Users/hangnt/Documents/Aptech/C2503L_05L_Java2/src/c2503l_05l_java2/B12_Login/entity/User.java</file>
-            <file>file:/Users/hangnt/Documents/Aptech/C2503L_05L_Java2/src/c2503l_05l_java2/B12_Login/entity/LoaiSanPham.java</file>
-            <file>file:/Users/hangnt/Documents/Aptech/C2503L_05L_Java2/src/c2503l_05l_java2/B12_Login/entity/SanPham.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
